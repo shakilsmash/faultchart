@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PluginHoverline } from './plugin-hoverline';
+import { getLocaleNumberSymbol } from '@angular/common';
  
 @Component({
   selector: 'line-chart-demo',
@@ -8,12 +9,21 @@ import { PluginHoverline } from './plugin-hoverline';
 export class MyLineChartComponent {
   // lineChart
   public lineChartData:Array<any> = [
-    {data: [, , 1, 1, , , ], label: 'Faults'},
+    {data: [, , 1, 1, , 1, 1 ], label: 'Faults'},
+    
   ];
-  public lineChartLabels:Array<any> = ['12AM', '1AM', , , '4AM', '5AM', '6AM'];
+  public lineChartLabels:Array<any> = ['12AM', '1AM', 'test', 'lol', '4AM', '5AM', '6AM'];
   public lineChartOptions:any = {
     responsive: true,
-    scales: { yAxes: [{ display: false }] },
+    showXLabels: false,
+    
+    scales: { yAxes: [{ display: false }], xAxes:[{display: true, ticks: {
+      //X-axes display control:v
+      
+      callback: function(dataLabel, index) {
+        return index % 2 === 0 ? dataLabel : null;
+      }
+    }}] },
     lineOnHover: {
       enabled: true,
       //lineColor: '#bbb',
@@ -24,6 +34,7 @@ export class MyLineChartComponent {
     mode: 'nearest',
     intersect: true
   },
+  
   tooltips: {
     mode: 'index',
     intersect: false,
@@ -73,24 +84,55 @@ export class MyLineChartComponent {
     if (tooltipModel.body) {
         var titleLines = tooltipModel.title || [];
         var bodyLines = tooltipModel.body.map(getBody);
+        var innerHtml = '<thead>'
+        titleLines.forEach(function(title) {
+          innerHtml += '<tr><th>' + title + 'Works</th></tr>';
+      });
+        // var innerHtml = '<tbody>' +
+        //                     '<tr><td>Start:</td><td bgcolor="#bababa"> Sun 1 Jul 2018 18:26:18 GMD+8</td></tr>' + 
+        //                     '<tr><td>End:</td><td> Sun 1 Jul 2018 18:32:03 GMD+8</td></tr>' + 
+        //                     '<tr><td>Length:</td><td>00:05:45</td></tr>' + 
+        //                     '<tr><td>Keywords:</td><td>works, yay, best</td></tr>'
+        //                 ;
 
-        var innerHtml = '<tbody>' +
-                            '<tr><td>Start:</td><td bgcolor="#bababa"> Sun 1 Jul 2018 18:26:18 GMD+8</td></tr>' + 
-                            '<tr><td>End:</td><td> Sun 1 Jul 2018 18:32:03 GMD+8</td></tr>' + 
-                            '<tr><td>Length:</td><td>00:05:45</td></tr>' + 
-                            '<tr><td>Keywords:</td><td>works, yay, best</td></tr>'
-                        ;
-        
+        innerHtml += '</thead><tbody>';
+        bodyLines.forEach(function(body, i) {
+            var colors = tooltipModel.labelColors[i];
+            var style = 'background:' + colors.backgroundColor;
+            style += '; border-color:' + colors.borderColor;
+            style += '; border-width: 2px';
+            var span = '<span style="' + style + '"></span>';
+            
+            innerHtml += '<tr><td>' + span + '' + body + '</td></tr>';
+          
+        });
+
+
         // bodyLines.forEach(function(body, i) {
         //     var colors = tooltipModel.labelColors[i];
         //     var style = 'background:' + colors.backgroundColor;
         //     style += '; border-color:' + colors.borderColor;
         //     style += '; border-width: 2px';
         //     var span = '<span style="' + style + '"></span>';
-        //     innerHtml += '<tr><td>' + span + body + '</td></tr>';
-        // });
-        innerHtml += '</tbody>';
+        //     var chartInstance = this.chart,
+        //     ctx = chartInstance.ctx;
 
+        //       ctx.textAlign = 'center';
+        //       ctx.textBaseline = 'bottom';
+        //       innerHtml += '<tr><td>' + span;
+        //       this.data.datasets.forEach(function (dataset, i) {
+        //           var meta = chartInstance.controller.getDatasetMeta(i);
+        //           meta.data.forEach(function (bar, index) {
+        //               var data = dataset.data[index];
+        //               innerHtml =+ bar._model.x;
+        //               //ctx.fillText(data, bar._model.x, bar._model.y - 5);
+        //           });
+        //       });
+        //     innerHtml=+ body + '</td></tr>';
+        // });
+
+        innerHtml += '</tbody>';
+        
         var tableRoot = tooltipEl.querySelector('table');
         tableRoot.innerHTML = innerHtml;
     }

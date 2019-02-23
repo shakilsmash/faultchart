@@ -1,5 +1,40 @@
 <div class="container">
   <div>
       <router-outlet></router-outlet>
+      <div ng-app="CommonService">
+          <form #faultForm="ngForm" (ngSubmit)="onSave(faultForm.value)" novalidate>
+            <input name="id" type="hidden" [(ngModel)]="id" />
+            <input required name="fromTime" [(ngModel)]="fromTime" type="datetime-local"/>
+            <input required name="toTime" [(ngModel)]="toTIme" type="datetime-local" />
+            <input required name="domain" [(ngModel)]="domain" type="text" />
+            <input required name="subDomain" [(ngModel)]="subDomain"  type="text" />
+            <input required name="causeDescriptor" [(ngModel)]="causeDescriptor" type="text" />
+            <input required name="correctDescriptor" [(ngModel)]="correctDescriptor" type="text" />
+          </form>
+        </div>
+        <div>
+          <table>
+            <tr>
+              <td>From Time</td>
+              <td>To Time</td>
+              <td>Domain</td>
+              <td>Sub Domain</td>
+              <td>Cause Descriptor</td>
+              <td>Corrective Descriptor</td>
+            </tr>
+            <tr>
+              <td>{{ind + 1}}</td>
+              <td>{{kk.fromTime}}</td>
+              <td>{{kk.toTime}}</td>
+              <td>{{kk.domain}}</td>
+              <td>{{kk.subDomain}}</td>
+              <td>{{kk.causeDescriptor}}</td>
+              <td>{{kk.correctDescriptor}}</td>
+              <td><a (click)="edit(kk)" style="color:blueviolet">Edit</a></td>
+              <td><a (click)="delete(kk._id)" style="color:blueviolet">Delete</a></td>
+              <td><a href="Test">Hello</a></td>
+            </tr>
+          </table>
+        </div>
   </div>
 </div>

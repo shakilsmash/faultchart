@@ -15,6 +15,15 @@ module.exports = function (config) {
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
+    webpack: {
+      // any necessary webpack configuration
+      devtool: 'inline-source-map',
+      module: {
+        loaders: [
+          { test: /\.js$/, loader: 'babel', exclude: [/node_modules/, /particles.js/] }
+        ]
+      }
+    },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage/hello-world'),
       reports: ['html', 'lcovonly', 'text-summary'],

@@ -1,3 +1,4 @@
+import { CommonService } from './common.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -7,6 +8,8 @@ import { ChartComponent } from './chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { MyBarChartComponent } from './my-bar-chart/my-bar-chart.component';
 import { MyLineChartComponent } from './my-line-chart/my-line-chart.component';
+import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -18,9 +21,12 @@ import { MyLineChartComponent } from './my-line-chart/my-line-chart.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ChartsModule
+    ChartsModule,
+    BrowserModule,
+    HttpModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [CommonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
